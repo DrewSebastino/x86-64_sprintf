@@ -36,7 +36,7 @@
 
 ;Example usage:
 ;	mov r15, 1000
-;	sprintf outBuffer, `Value of r15: %#010lX\n%ln`, r15, r10,
+;	sprintf outBuffer, `Value of r15: %#010lX\n%ln`, r15, r10
 ;	write STDOUT_FILENO, outBuffer, r10
 ;
 ;stdout:
@@ -672,7 +672,7 @@ sprintf_hex_func:
 	ret
 	
 sprintf_oct_func:
-	mov r8, rdi
+	push rdi
 	mov rdi, (asciiBuffer+31)		;the middle of the buffer
 	std													;in order to write backwards
 	jmp .start
@@ -684,8 +684,8 @@ sprintf_oct_func:
 	add rax, '0'		;ascii number offset
 	stosb
 	loop .loop
-	mov rdi, r8			;restore the original destination address
 	cld
+	pop rdi
 	ret
 	
 sprintf_dec_func:
